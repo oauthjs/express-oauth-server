@@ -24,7 +24,7 @@
   "dependencies": {
     "bluebird": "^3.0.5",
     "express": "^4.13.3",
-    "oauth2-server": "seegno-forks/node-oauth2-server#enhancement/refactor-project",
+    "oauth2-server": "next",
     "thenify": "^3.0.0"
   },
   "devDependencies": {
