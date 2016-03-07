@@ -16,11 +16,11 @@ The following example uses `body-parser` but you may opt for an alternative libr
 ```js
 var bodyparser = require('body-parser');
 var express = require('express');
-var oauthserver = require('express-oauth-server');
+var OAuthServer = require('express-oauth-server');
 
 var app = express();
 
-app.oauth = oauthserver({
+app.oauth = new OAuthServer({
   model: {}, // See https://github.com/thomseddon/node-oauth2-server for specification
 });
 
