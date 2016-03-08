@@ -37,10 +37,11 @@ ExpressOAuthServer.prototype.authenticate = function() {
 
   return function(req, res, next) {
     var request = new Request(req);
+    var response = new Response(res);
 
     return Promise.bind(this)
       .then(function() {
-        return server.authenticate(request);
+        return server.authenticate(request, response);
       })
       .tap(function(token) {
         req.app.locals.oauth = { token: token };

@@ -33,8 +33,9 @@ describe('ExpressOAuthServer', function() {
         .get('/')
         .end(function() {
           oauth.server.authenticate.callCount.should.equal(1);
-          oauth.server.authenticate.firstCall.args.should.have.length(1);
+          oauth.server.authenticate.firstCall.args.should.have.length(2);
           oauth.server.authenticate.firstCall.args[0].should.be.an.instanceOf(Request);
+          oauth.server.authenticate.firstCall.args[1].should.be.an.instanceOf(Response);
           oauth.server.authenticate.restore();
 
           done();

@@ -55,6 +55,30 @@ describe('ExpressOAuthServer', function() {
         .expect({ error: 'invalid_argument', error_description: 'Invalid argument: model does not implement `getAccessToken()`' })
         .end(done);
     });
+
+    it('should authenticate the request', function(done) {
+      var token = { user: {} };
+      var model = {
+        getAccessToken: function() {
+          return token;
+        }
+      };
+      var oauth = new ExpressOAuthServer({ model: model });
+
+      app.use(oauth.authenticate());
+
+      app.use(function(req, res, next) {
+        res.send();
+
+        next();
+      });
+
+      request(app.listen())
+        .get('/')
+        .set('Authorization', 'Bearer foobar')
+        .expect(200)
+        .end(done);
+    });
   });
 
   describe('authorize()', function() {
