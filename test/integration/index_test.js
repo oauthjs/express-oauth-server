@@ -79,9 +79,62 @@ describe('ExpressOAuthServer', function() {
         .expect(200)
         .end(done);
     });
+
+    it('should cache the authorization token', function(done) {
+      var token = { user: {} };
+      var model = {
+        getAccessToken: function() {
+          return token;
+        }
+      };
+      var oauth = new ExpressOAuthServer({ model: model });
+
+      app.use(oauth.authenticate());
+
+      app.use(function(req, res, next) {
+        res.locals.oauth.token.should.equal(token);
+
+        next();
+      });
+
+      request(app.listen())
+        .get('/')
+        .set('Authorization', 'Bearer foobar')
+        .end(done);
+    });
   });
 
   describe('authorize()', function() {
+    it('should cache the authorization code', function(done) {
+      var code = { authorizationCode: 123 };
+      var model = {
+        getAccessToken: function() {
+          return { user: {} };
+        },
+        getClient: function() {
+          return { grants: ['authorization_code'], redirectUris: ['http://example.com'] };
+        },
+        saveAuthorizationCode: function() {
+          return code;
+        }
+      };
+      var oauth = new ExpressOAuthServer({ model: model });
+
+      app.use(oauth.authorize());
+
+      app.use(function(req, res, next) {
+        res.locals.oauth.code.should.equal(code);
+
+        next();
+      });
+
+      request(app.listen())
+        .post('/?state=foobiz')
+        .set('Authorization', 'Bearer foobar')
+        .send({ client_id: 12345, response_type: 'code' })
+        .end(done);
+    });
+
     it('should return a `location` header with the error', function(done) {
       var model = {
         getAccessToken: function() {
@@ -143,6 +196,36 @@ describe('ExpressOAuthServer', function() {
   });
 
   describe('token()', function() {
+    it('should cache the authorization token', function(done) {
+      var token = { accessToken: 'foobar', client: {}, user: {} };
+      var model = {
+        getClient: function() {
+          return { grants: ['password'] };
+        },
+        getUser: function() {
+          return {};
+        },
+        saveToken: function() {
+          return token;
+        }
+      };
+      var oauth = new ExpressOAuthServer({ model: model });
+
+      app.use(oauth.token());
+
+      app.use(function(req, res, next) {
+        res.locals.oauth.token.should.equal(token);
+
+        next();
+      });
+
+      request(app.listen())
+        .post('/')
+        .send('client_id=foo&client_secret=bar&grant_type=password&username=qux&password=biz')
+        .expect({ access_token: 'foobar', token_type: 'bearer' })
+        .end(done);
+    });
+
     it('should return an `access_token`', function(done) {
       var model = {
         getClient: function() {

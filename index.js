@@ -44,7 +44,7 @@ ExpressOAuthServer.prototype.authenticate = function() {
         return server.authenticate(request, response);
       })
       .tap(function(token) {
-        req.app.locals.oauth = { token: token };
+        res.locals.oauth = { token: token };
       })
       .catch(function(e) {
         return handleError(e, req, res);
@@ -73,7 +73,7 @@ ExpressOAuthServer.prototype.authorize = function() {
         return server.authorize(request, response);
       })
       .tap(function(code) {
-        req.app.locals.oauth = { code: code };
+        res.locals.oauth = { code: code };
       })
       .then(function() {
         return handleResponse(req, res, response);
@@ -105,7 +105,7 @@ ExpressOAuthServer.prototype.token = function() {
         return server.token(request, response);
       })
       .tap(function(token) {
-        req.app.locals.oauth = { token: token };
+        res.locals.oauth = { token: token };
       })
       .then(function() {
         return handleResponse(req, res, response);
