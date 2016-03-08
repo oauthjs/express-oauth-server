@@ -32,7 +32,7 @@ function ExpressOAuthServer(options) {
  * (See: https://tools.ietf.org/html/rfc6749#section-7)
  */
 
-ExpressOAuthServer.prototype.authenticate = function() {
+ExpressOAuthServer.prototype.authenticate = function(options) {
   var server = this.server;
 
   return function(req, res, next) {
@@ -41,7 +41,7 @@ ExpressOAuthServer.prototype.authenticate = function() {
 
     return Promise.bind(this)
       .then(function() {
-        return server.authenticate(request, response);
+        return server.authenticate(request, response, options);
       })
       .tap(function(token) {
         res.locals.oauth = { token: token };
@@ -61,7 +61,7 @@ ExpressOAuthServer.prototype.authenticate = function() {
  * (See: https://tools.ietf.org/html/rfc6749#section-3.1)
  */
 
-ExpressOAuthServer.prototype.authorize = function() {
+ExpressOAuthServer.prototype.authorize = function(options) {
   var server = this.server;
 
   return function(req, res, next) {
@@ -70,7 +70,7 @@ ExpressOAuthServer.prototype.authorize = function() {
 
     return Promise.bind(this)
       .then(function() {
-        return server.authorize(request, response);
+        return server.authorize(request, response, options);
       })
       .tap(function(code) {
         res.locals.oauth = { code: code };
@@ -93,7 +93,7 @@ ExpressOAuthServer.prototype.authorize = function() {
  * (See: https://tools.ietf.org/html/rfc6749#section-3.2)
  */
 
-ExpressOAuthServer.prototype.token = function() {
+ExpressOAuthServer.prototype.token = function(options) {
   var server = this.server;
 
   return function(req, res, next) {
@@ -102,7 +102,7 @@ ExpressOAuthServer.prototype.token = function() {
 
     return Promise.bind(this)
       .then(function() {
-        return server.token(request, response);
+        return server.token(request, response, options);
       })
       .tap(function(token) {
         res.locals.oauth = { token: token };
