@@ -45,11 +45,12 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
       })
       .tap(function(token) {
         res.locals.oauth = { token: token };
+        next();
       })
       .catch(function(e) {
         return handleError(e, req, res);
-      })
-      .finally(next);
+      });
+      //.finally(next);
   };
 };
 
@@ -131,6 +132,7 @@ var handleResponse = function(req, res, response) {
  */
 
 var handleError = function(e, req, res, response) {
+
   if (response) {
     res.set(response.headers);
   }
