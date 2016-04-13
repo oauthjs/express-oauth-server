@@ -124,8 +124,7 @@ ExpressOAuthServer.prototype.token = function() {
 var handleResponse = function(req, res, response) {
   res.set(response.headers);
 
-  res.send(response.body);
-  res.status(response.status);
+  res.status(response.status).send(response.body);
 };
 
 /**
@@ -141,8 +140,7 @@ var handleError = function(e, req, res, response) {
     return res.status(e.code);
   }
 
-  res.send({ error: e.name, error_description: e.message });
-  res.status(e.code);
+  res.status(e.code).send({ error: e.name, error_description: e.message });
 };
 
 /**
