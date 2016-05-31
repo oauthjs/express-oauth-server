@@ -24,9 +24,9 @@ app.oauth = new OAuthServer({
   model: {}, // See https://github.com/thomseddon/node-oauth2-server for specification
 });
 
-app.use(bodyParser.json());
+app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
-app.use(app.oauth.authorise());
+app.use(app.oauth.authorize());
 
 app.use(function(req, res) {
   res.send('Secret area');
