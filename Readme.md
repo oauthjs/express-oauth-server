@@ -10,11 +10,11 @@ This is the express wrapper for [oauth2-server](https://github.com/thomseddon/no
 
 ## Quick Start
 
-The module provides two middlewares - one for granting tokens and another to authorise them. `express-oauth-server` and, consequently `oauth2-server`, expect the request body to be parsed already.
+The module provides two middlewares - one for granting tokens and another to authorize them. `express-oauth-server` and, consequently `oauth2-server`, expect the request body to be parsed already.
 The following example uses `body-parser` but you may opt for an alternative library.
 
 ```js
-var bodyparser = require('body-parser');
+var bodyParser = require('body-parser');
 var express = require('express');
 var OAuthServer = require('express-oauth-server');
 
@@ -25,8 +25,8 @@ app.oauth = new OAuthServer({
 });
 
 app.use(bodyParser.json());
-app.use(bodyparser.urlencoded({ extended: false }));
-app.use(app.oauth.authorise());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(app.oauth.authorize());
 
 app.use(function(req, res) {
   res.send('Secret area');
