@@ -1,8 +1,8 @@
-# Express OAuth Server [![Build Status](https://travis-ci.org/seegno/express-oauth-server.png?branch=master)](https://travis-ci.org/seegno/express-oauth-server)
+# Express OAuth Server [![Build Status](https://travis-ci.org/oauthjs/express-oauth-server.png?branch=master)](https://travis-ci.org/oauthjs/express-oauth-server)
 
-Complete, compliant and well tested module for implementing an OAuth2 Server/Provider with [express](https://github.com/strongloop/express) in [node.js](http://nodejs.org/).
+Complete, compliant and well tested module for implementing an OAuth2 Server/Provider with [express](https://github.com/expressjs/express) in [node.js](http://nodejs.org/).
 
-This is the express wrapper for [oauth2-server](https://github.com/thomseddon/node-oauth2-server).
+This is the express wrapper for [oauth2-server](https://github.com/oauthjs/node-oauth2-server).
 
 ## Installation
 
