@@ -50,7 +50,6 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
       .catch(function(e) {
         return handleError(e, req, res);
       });
-      //.finally(next);
   };
 };
 
@@ -81,8 +80,7 @@ ExpressOAuthServer.prototype.authorize = function(options) {
       })
       .catch(function(e) {
         return handleError(e, req, res, response);
-      })
-      .finally(next);
+      });
   };
 };
 
@@ -113,8 +111,7 @@ ExpressOAuthServer.prototype.token = function(options) {
       })
       .catch(function(e) {
         return handleError(e, req, res, response);
-      })
-      .finally(next);
+      });
   };
 };
 
