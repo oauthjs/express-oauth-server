@@ -52,7 +52,7 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
         next();
       })
       .catch(function(e) {
-        return handleError(e, req, res, null, next);
+        return handleError.call(this, e, req, res, null, next);
     });
   };
 };
@@ -80,10 +80,10 @@ ExpressOAuthServer.prototype.authorize = function(options) {
         res.locals.oauth = { code: code };
       })
       .then(function() {
-        return handleResponse(req, res, response);
+        return handleResponse.call(this, req, res, response);
       })
       .catch(function(e) {
-        return handleError(e, req, res, response, next);
+        return handleError.call(this, e, req, res, response, next);
       });
   };
 };
@@ -111,10 +111,10 @@ ExpressOAuthServer.prototype.token = function(options) {
         res.locals.oauth = { token: token };
       })
       .then(function() {
-        return handleResponse(req, res, response);
+        return handleResponse.call(this, req, res, response);
       })
       .catch(function(e) {
-        return handleError(e, req, res, response, next);
+        return handleError.call(this, e, req, res, response, next);
       });
   };
 };
@@ -141,11 +141,13 @@ var handleError = function(e, req, res, response, next) {
       res.set(response.headers);
     }
 
+    res.status(e.code);
+
     if (e instanceof UnauthorizedRequestError) {
-      return res.status(e.code);
+      return res.send();
     }
 
-    res.status(e.code).send({ error: e.name, error_description: e.message });
+    res.send({ error: e.name, error_description: e.message });
   }
 };
 
