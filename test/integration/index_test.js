@@ -222,7 +222,7 @@ describe('ExpressOAuthServer', function() {
       request(app.listen())
         .post('/')
         .send('client_id=foo&client_secret=bar&grant_type=password&username=qux&password=biz')
-        .expect({ access_token: 'foobar', token_type: 'bearer' })
+        .expect({ access_token: 'foobar', token_type: 'Bearer' })
         .end(done);
     });
 
@@ -245,7 +245,7 @@ describe('ExpressOAuthServer', function() {
       request(app.listen())
         .post('/')
         .send('client_id=foo&client_secret=bar&grant_type=password&username=qux&password=biz')
-        .expect({ access_token: 'foobar', token_type: 'bearer' })
+        .expect({ access_token: 'foobar', token_type: 'Bearer' })
         .end(done);
     });
 
@@ -268,7 +268,7 @@ describe('ExpressOAuthServer', function() {
       request(app.listen())
         .post('/')
         .send('client_id=foo&client_secret=bar&grant_type=password&username=qux&password=biz')
-        .expect({ access_token: 'foobar', refresh_token: 'foobiz', token_type: 'bearer' })
+        .expect({ access_token: 'foobar', refresh_token: 'foobiz', token_type: 'Bearer' })
         .end(done);
     });
 
