@@ -22,125 +22,127 @@ function ExpressOAuthServer(options) {
   }
 
   this.server = new NodeOAuthServer(options);
-}
 
-/**
- * Authentication Middleware.
- *
- * Returns a middleware that will validate a token.
- *
- * (See: https://tools.ietf.org/html/rfc6749#section-7)
- */
 
-ExpressOAuthServer.prototype.authenticate = function(options) {
-  var server = this.server;
+  /**
+   * Authentication Middleware.
+   *
+   * Returns a middleware that will validate a token.
+   *
+   * (See: https://tools.ietf.org/html/rfc6749#section-7)
+   */
 
-  return function(req, res, next) {
-    var request = new Request(req);
-    var response = new Response(res);
+  ExpressOAuthServer.prototype.authenticate = function(options) {
+    var server = this.server;
 
-    return Promise.bind(this)
-      .then(function() {
-        return server.authenticate(request, response, options);
-      })
-      .tap(function(token) {
-        res.locals.oauth = { token: token };
-      })
-      .catch(function(e) {
-        return handleError(e, req, res);
-      })
-      .finally(next);
+    return function(req, res, next) {
+      var request = new Request(req);
+      var response = new Response(res);
+
+      return Promise.bind(this)
+        .then(function() {
+          return server.authenticate(request, response, options);
+        })
+        .tap(function(token) {
+          res.locals.oauth = { token: token };
+        })
+        .catch(function(e) {
+          return handleError(e, req, res);
+        })
+        .finally(next);
+    };
   };
-};
 
-/**
- * Authorization Middleware.
- *
- * Returns a middleware that will authorize a client to request tokens.
- *
- * (See: https://tools.ietf.org/html/rfc6749#section-3.1)
- */
+  /**
+   * Authorization Middleware.
+   *
+   * Returns a middleware that will authorize a client to request tokens.
+   *
+   * (See: https://tools.ietf.org/html/rfc6749#section-3.1)
+   */
 
-ExpressOAuthServer.prototype.authorize = function(options) {
-  var server = this.server;
+  ExpressOAuthServer.prototype.authorize = function(options) {
+    var server = this.server;
 
-  return function(req, res, next) {
-    var request = new Request(req);
-    var response = new Response(res);
+    return function(req, res, next) {
+      var request = new Request(req);
+      var response = new Response(res);
 
-    return Promise.bind(this)
-      .then(function() {
-        return server.authorize(request, response, options);
-      })
-      .tap(function(code) {
-        res.locals.oauth = { code: code };
-      })
-      .then(function() {
-        return handleResponse(req, res, response);
-      })
-      .catch(function(e) {
-        return handleError(e, req, res, response);
-      })
-      .finally(next);
+      return Promise.bind(this)
+        .then(function() {
+          return server.authorize(request, response, options);
+        })
+        .tap(function(code) {
+          res.locals.oauth = { code: code };
+        })
+        .then(function() {
+          return handleResponse(req, res, response);
+        })
+        .catch(function(e) {
+          return handleError(e, req, res, response);
+        })
+        .finally(next);
+    };
   };
-};
 
-/**
- * Grant Middleware.
- *
- * Returns middleware that will grant tokens to valid requests.
- *
- * (See: https://tools.ietf.org/html/rfc6749#section-3.2)
- */
+  /**
+   * Grant Middleware.
+   *
+   * Returns middleware that will grant tokens to valid requests.
+   *
+   * (See: https://tools.ietf.org/html/rfc6749#section-3.2)
+   */
 
-ExpressOAuthServer.prototype.token = function(options) {
-  var server = this.server;
+  ExpressOAuthServer.prototype.token = function(options) {
+    var server = this.server;
 
-  return function(req, res, next) {
-    var request = new Request(req);
-    var response = new Response(res);
+    return function(req, res, next) {
+      var request = new Request(req);
+      var response = new Response(res);
 
-    return Promise.bind(this)
-      .then(function() {
-        return server.token(request, response, options);
-      })
-      .tap(function(token) {
-        res.locals.oauth = { token: token };
-      })
-      .then(function() {
-        return handleResponse(req, res, response);
-      })
-      .catch(function(e) {
-        return handleError(e, req, res, response);
-      })
-      .finally(next);
+      return Promise.bind(this)
+        .then(function() {
+          return server.token(request, response, options);
+        })
+        .tap(function(token) {
+          res.locals.oauth = { token: token };
+        })
+        .then(function() {
+          return handleResponse(req, res, response);
+        })
+        .catch(function(e) {
+          return handleError(e, req, res, response);
+        })
+        .finally(next);
+    };
   };
-};
 
-/**
- * Handle response.
- */
+  /**
+   * Handle response.
+   */
 
-var handleResponse = function(req, res, response) {
-  res.set(response.headers);
-  res.status(response.status).send(response.body);
-};
-
-/**
- * Handle error.
- */
-
-var handleError = function(e, req, res, response) {
-  if (response) {
+  var handleResponse = function(req, res, response) {
     res.set(response.headers);
-  }
+    res.status(response.status).send(response.body);
+  };
 
-  if (e instanceof UnauthorizedRequestError) {
-    return res.status(e.code);
-  }
+  /**
+   * Handle error.
+   */
 
-  res.status(e.code).send({ error: e.name, error_description: e.message });
-};
+  var handleError = function(e, req, res, response) {
+    if (response) {
+      res.set(response.headers);
+    }
+
+    if (e instanceof UnauthorizedRequestError) {
+      return res.status(e.code);
+    }
+
+    res.status(e.code).send({ error: e.name, error_description: e.message });
+  };
+
+}
 
 /**
  * Export constructor.
