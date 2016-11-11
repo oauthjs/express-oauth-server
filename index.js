@@ -22,6 +22,9 @@ function ExpressOAuthServer(options) {
     throw new InvalidArgumentError('Missing parameter: `model`');
   }
 
+  this.useErrorHandler = options.useErrorHandler ? true : false;
+  delete options.useErrorHandler;
+
   this.server = new NodeOAuthServer(options);
 }
 
@@ -34,22 +37,22 @@ function ExpressOAuthServer(options) {
  */
 
 ExpressOAuthServer.prototype.authenticate = function(options) {
-  var server = this.server;
+  var that = this;
 
   return function(req, res, next) {
     var request = new Request(req);
     var response = new Response(res);
 
-    return Promise.bind(this)
+    return Promise.bind(that)
       .then(function() {
-        return server.authenticate(request, response, options);
+        return this.server.authenticate(request, response, options);
       })
       .tap(function(token) {
         res.locals.oauth = { token: token };
         next();
       })
       .catch(function(e) {
-        return handleError(e, req, res);
+        return handleError.call(this, e, req, res, null, next);
       });
   };
 };
@@ -63,24 +66,24 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
  */
 
 ExpressOAuthServer.prototype.authorize = function(options) {
-  var server = this.server;
+  var that = this;
 
   return function(req, res, next) {
     var request = new Request(req);
     var response = new Response(res);
 
-    return Promise.bind(this)
+    return Promise.bind(that)
       .then(function() {
-        return server.authorize(request, response, options);
+        return this.server.authorize(request, response, options);
       })
       .tap(function(code) {
         res.locals.oauth = { code: code };
       })
       .then(function() {
-        return handleResponse(req, res, response);
+        return handleResponse.call(this, req, res, response);
       })
       .catch(function(e) {
-        return handleError(e, req, res, response);
+        return handleError.call(this, e, req, res, response, next);
       });
   };
 };
@@ -94,24 +97,24 @@ ExpressOAuthServer.prototype.authorize = function(options) {
  */
 
 ExpressOAuthServer.prototype.token = function(options) {
-  var server = this.server;
+  var that = this;
 
   return function(req, res, next) {
     var request = new Request(req);
     var response = new Response(res);
 
-    return Promise.bind(this)
+    return Promise.bind(that)
       .then(function() {
-        return server.token(request, response, options);
+        return this.server.token(request, response, options);
       })
       .tap(function(token) {
         res.locals.oauth = { token: token };
       })
       .then(function() {
-        return handleResponse(req, res, response);
+        return handleResponse.call(this, req, res, response);
       })
       .catch(function(e) {
-        return handleError(e, req, res, response);
+        return handleError.call(this, e, req, res, response, next);
       });
   };
 };
@@ -136,17 +139,23 @@ var handleResponse = function(req, res, response) {
  * Handle error.
  */
 
-var handleError = function(e, req, res, response) {
+var handleError = function(e, req, res, response, next) {
 
-  if (response) {
-    res.set(response.headers);
+  if (this.useErrorHandler === true) {
+    next(e);
+  } else {
+    if (response) {
+      res.set(response.headers);
+    }
+
+    res.status(e.code);
+
+    if (e instanceof UnauthorizedRequestError) {
+      return res.send();
+    }
+
+    res.send({ error: e.name, error_description: e.message });
   }
-
-  if (e instanceof UnauthorizedRequestError) {
-    return res.status(e.code);
-  }
-
-  res.status(e.code).send({ error: e.name, error_description: e.message });
 };
 
 /**
