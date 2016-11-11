@@ -126,8 +126,7 @@ var handleResponse = function(req, res, response) {
     delete response.headers.location;
     res.set(response.headers);
     res.redirect(location);
-  }
-  else {
+  } else {
     res.set(response.headers);
     res.status(response.status).send(response.body);
   }
