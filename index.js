@@ -37,15 +37,15 @@ function ExpressOAuthServer(options) {
  */
 
 ExpressOAuthServer.prototype.authenticate = function(options) {
-  var server = this.server;
+  var that = this;
 
   return function(req, res, next) {
     var request = new Request(req);
     var response = new Response(res);
 
-    return Promise.bind(this)
+    return Promise.bind(that)
       .then(function() {
-        return server.authenticate(request, response, options);
+        return this.server.authenticate(request, response, options);
       })
       .tap(function(token) {
         res.locals.oauth = { token: token };
@@ -66,15 +66,15 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
  */
 
 ExpressOAuthServer.prototype.authorize = function(options) {
-  var server = this.server;
+  var that = this;
 
   return function(req, res, next) {
     var request = new Request(req);
     var response = new Response(res);
 
-    return Promise.bind(this)
+    return Promise.bind(that)
       .then(function() {
-        return server.authorize(request, response, options);
+        return this.server.authorize(request, response, options);
       })
       .tap(function(code) {
         res.locals.oauth = { code: code };
@@ -97,15 +97,15 @@ ExpressOAuthServer.prototype.authorize = function(options) {
  */
 
 ExpressOAuthServer.prototype.token = function(options) {
-  var server = this.server;
+  var that = this;
 
   return function(req, res, next) {
     var request = new Request(req);
     var response = new Response(res);
 
-    return Promise.bind(this)
+    return Promise.bind(that)
       .then(function() {
-        return server.token(request, response, options);
+        return this.server.token(request, response, options);
       })
       .tap(function(token) {
         res.locals.oauth = { token: token };
