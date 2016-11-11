@@ -53,7 +53,7 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
       })
       .catch(function(e) {
         return handleError.call(this, e, req, res, null, next);
-    });
+      });
   };
 };
 
