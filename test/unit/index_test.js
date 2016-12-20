@@ -67,7 +67,7 @@ describe('ExpressOAuthServer', function() {
   });
 
   describe('authorize()', function() {
-    it('should call `authorize() and end middleware execution`', function(done) {
+    it('should call `authorize()` and end middleware execution', function(done) {
       var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {} });
 
@@ -90,7 +90,7 @@ describe('ExpressOAuthServer', function() {
         });
     });
 
-    it('should call `authorize() and continue middleware chain`', function(done) {
+    it('should call `authorize()` and continue middleware chain', function(done) {
       var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
@@ -136,7 +136,7 @@ describe('ExpressOAuthServer', function() {
   });
 
   describe('token()', function() {
-    it('should call `token() and end middleware chain`', function(done) {
+    it('should call `token()` and end middleware chain', function(done) {
       var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {} });
 
@@ -159,7 +159,7 @@ describe('ExpressOAuthServer', function() {
         });
     });
 
-    it('should call `token() and continue middleware chain`', function(done) {
+    it('should call `token()` and continue middleware chain', function(done) {
       var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
