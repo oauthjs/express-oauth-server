@@ -11,6 +11,7 @@ var bodyparser = require('body-parser');
 var express = require('express');
 var request = require('supertest');
 var should = require('should');
+var sinon = require('sinon');
 
 /**
  * Test `ExpressOAuthServer`.
@@ -91,17 +92,21 @@ describe('ExpressOAuthServer', function() {
       var oauth = new ExpressOAuthServer({ model: model });
 
       app.use(oauth.authenticate());
-
-      app.use(function(req, res, next) {
+      
+      var spy = sinon.spy(function(req, res, next) {
         res.locals.oauth.token.should.equal(token);
 
         next();
       });
+      app.use(spy);
 
       request(app.listen())
         .get('/')
         .set('Authorization', 'Bearer foobar')
-        .end(done);
+        .expect(200, function(){
+            spy.called.should.be.true;
+            done();
+        });
     });
   });
 
@@ -119,21 +124,24 @@ describe('ExpressOAuthServer', function() {
           return code;
         }
       };
-      var oauth = new ExpressOAuthServer({ model: model });
+      var oauth = new ExpressOAuthServer({ model: model, continueMiddleware: true });
 
       app.use(oauth.authorize());
 
-      app.use(function(req, res, next) {
+      var spy = sinon.spy(function(req, res, next) {
         res.locals.oauth.code.should.equal(code);
-
         next();
       });
+      app.use(spy);
 
       request(app.listen())
         .post('/?state=foobiz')
         .set('Authorization', 'Bearer foobar')
         .send({ client_id: 12345, response_type: 'code' })
-        .end(done);
+        .expect(200, function(){
+            spy.called.should.be.true;
+            done();
+        });
     });
 
     it('should return a `location` header with the error', function(done) {
@@ -210,21 +218,24 @@ describe('ExpressOAuthServer', function() {
           return token;
         }
       };
-      var oauth = new ExpressOAuthServer({ model: model });
+      var oauth = new ExpressOAuthServer({ model: model, continueMiddleware: true });
 
       app.use(oauth.token());
-
-      app.use(function(req, res, next) {
+      var spy = sinon.spy(function(req, res, next) {
         res.locals.oauth.token.should.equal(token);
 
         next();
       });
+      app.use(spy);
 
       request(app.listen())
         .post('/')
         .send('client_id=foo&client_secret=bar&grant_type=password&username=qux&password=biz')
         .expect({ access_token: 'foobar', token_type: 'Bearer' })
-        .end(done);
+        .expect(200, function(){ 
+          spy.called.should.be.true;
+          done();
+        });
     });
 
     it('should return an `access_token`', function(done) {
@@ -239,10 +250,10 @@ describe('ExpressOAuthServer', function() {
           return { accessToken: 'foobar', client: {}, user: {} };
         }
       };
-      var oauth = new ExpressOAuthServer({ model: model });
+      var spy = sinon.spy();
+      var oauth = new ExpressOAuthServer({ model: model, continueMiddleware: true });
 
       app.use(oauth.token());
-
       request(app.listen())
         .post('/')
         .send('client_id=foo&client_secret=bar&grant_type=password&username=qux&password=biz')

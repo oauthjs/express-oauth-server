@@ -34,3 +34,28 @@ app.use(function(req, res) {
 
 app.listen(3000);
 ```
+
+## Options
+
+```
+var options = { 
+  useErrorHandler: false, 
+  continueMiddleWare: false,
+}
+```
+* `useErrorHandler`
+(_type: boolean_ default: false)
+
+  If false, an error response will be rendered by this component.
+  Set this value to true to allow your own express error handler to handle the error.
+
+* `continueMiddleware`
+(_type: boolean default: false_)
+
+  The `authorize()` and `token()` middlewares will both render their 
+  result to the response and end the pipeline.
+  next() will only be called if this is set to true.
+
+  **Note:** You cannot modify the response since the headers have already been sent.
+
+  `authenticate()` does not modify the response and will always call next()

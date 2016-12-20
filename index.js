@@ -25,6 +25,9 @@ function ExpressOAuthServer(options) {
   this.useErrorHandler = options.useErrorHandler ? true : false;
   delete options.useErrorHandler;
 
+  this.continueMiddleware = options.continueMiddleware ? true : false;
+  delete options.continueMiddleware;
+
   this.server = new NodeOAuthServer(options);
 }
 
@@ -78,6 +81,9 @@ ExpressOAuthServer.prototype.authorize = function(options) {
       })
       .tap(function(code) {
         res.locals.oauth = { code: code };
+        if (this.continueMiddleware) {
+          next();
+        }
       })
       .then(function() {
         return handleResponse.call(this, req, res, response);
@@ -109,6 +115,9 @@ ExpressOAuthServer.prototype.token = function(options) {
       })
       .tap(function(token) {
         res.locals.oauth = { token: token };
+        if (this.continueMiddleware) {
+          next();
+        }
       })
       .then(function() {
         return handleResponse.call(this, req, res, response);

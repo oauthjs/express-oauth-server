@@ -61,19 +61,20 @@ describe('ExpressOAuthServer', function() {
           oauth.server.authenticate.firstCall.args[1].should.be.an.instanceOf(Response);
           oauth.server.authenticate.firstCall.args[2].should.eql({options: true});
           oauth.server.authenticate.restore();
-
           done();
         });
     });
   });
 
   describe('authorize()', function() {
-    it('should call `authorize()`', function(done) {
+    it('should call `authorize() and end middleware execution`', function(done) {
+      var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'authorize').returns({});
 
       app.use(oauth.authorize());
+      app.use(nextMiddleware);
 
       request(app.listen())
         .get('/')
@@ -84,7 +85,31 @@ describe('ExpressOAuthServer', function() {
           oauth.server.authorize.firstCall.args[1].should.be.an.instanceOf(Response);
           should.not.exist(oauth.server.authorize.firstCall.args[2]);
           oauth.server.authorize.restore();
+          nextMiddleware.called.should.be.false();
+          done();
+        });
+    });
 
+    it('should call `authorize() and continue middleware chain`', function(done) {
+      var nextMiddleware = sinon.spy()
+      var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
+
+      sinon.stub(oauth.server, 'authorize').returns({});
+
+      app.use(oauth.authorize());
+      app.use(nextMiddleware);
+
+      request(app.listen())
+        .get('/')
+        .end(function() {
+          oauth.server.authorize.callCount.should.equal(1);
+          oauth.server.authorize.firstCall.args.should.have.length(3);
+          oauth.server.authorize.firstCall.args[0].should.be.an.instanceOf(Request);
+          oauth.server.authorize.firstCall.args[1].should.be.an.instanceOf(Response);
+          should.not.exist(oauth.server.authorize.firstCall.args[2]);
+          oauth.server.authorize.restore();
+          nextMiddleware.called.should.be.true();
+          nextMiddleware.args[0].length.should.eql(3);
           done();
         });
     });
@@ -105,19 +130,20 @@ describe('ExpressOAuthServer', function() {
           oauth.server.authorize.firstCall.args[1].should.be.an.instanceOf(Response);
           oauth.server.authorize.firstCall.args[2].should.eql({options: true});
           oauth.server.authorize.restore();
-
           done();
         });
     });
   });
 
   describe('token()', function() {
-    it('should call `token()`', function(done) {
+    it('should call `token() and end middleware chain`', function(done) {
+      var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'token').returns({});
 
       app.use(oauth.token());
+      app.use(nextMiddleware);
 
       request(app.listen())
         .get('/')
@@ -128,7 +154,31 @@ describe('ExpressOAuthServer', function() {
           oauth.server.token.firstCall.args[1].should.be.an.instanceOf(Response);
           should.not.exist(oauth.server.token.firstCall.args[2]);
           oauth.server.token.restore();
+          nextMiddleware.called.should.be.false();
+          done();
+        });
+    });
 
+    it('should call `token() and continue middleware chain`', function(done) {
+      var nextMiddleware = sinon.spy()
+      var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
+
+      sinon.stub(oauth.server, 'token').returns({});
+
+      app.use(oauth.token());
+      app.use(nextMiddleware);
+
+      request(app.listen())
+        .get('/')
+        .end(function() {
+          oauth.server.token.callCount.should.equal(1);
+          oauth.server.token.firstCall.args.should.have.length(3);
+          oauth.server.token.firstCall.args[0].should.be.an.instanceOf(Request);
+          oauth.server.token.firstCall.args[1].should.be.an.instanceOf(Response);
+          should.not.exist(oauth.server.token.firstCall.args[2]);
+          oauth.server.token.restore();
+          nextMiddleware.called.should.be.true();
+          nextMiddleware.args[0].length.should.eql(3);
           done();
         });
     });
@@ -149,7 +199,6 @@ describe('ExpressOAuthServer', function() {
           oauth.server.token.firstCall.args[1].should.be.an.instanceOf(Response);
           oauth.server.token.firstCall.args[2].should.eql({options: true});
           oauth.server.token.restore();
-
           done();
         });
     });
