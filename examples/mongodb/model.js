@@ -13,10 +13,12 @@ var Schema = mongoose.Schema;
 mongoose.model('OAuthTokens', new Schema({
   accessToken: { type: String },
   accessTokenExpiresOn: { type: Date },
+  client : { type: Object },  // `client` and `user` are required in multiple places, for example `getAccessToken()`
   clientId: { type: String },
   refreshToken: { type: String },
   refreshTokenExpiresOn: { type: Date },
-  userId: { type: String }
+  user : { type: Object },
+  userId: { type: String },
 }));
 
 mongoose.model('OAuthClients', new Schema({
@@ -78,10 +80,12 @@ module.exports.saveToken = function(token, client, user) {
   var accessToken = new OAuthTokensModel({
     accessToken: token.accessToken,
     accessTokenExpiresOn: token.accessTokenExpiresOn,
+    client : client,
     clientId: client.clientId,
     refreshToken: token.refreshToken,
     refreshTokenExpiresOn: token.refreshTokenExpiresOn,
-    userId: user._id
+    user : user,
+    userId: user._id,
   });
   // Can't just chain `lean()` to `save()` as we did with `findOne()` elsewhere. Instead we use `Promise` to resolve the data.
   return new Promise( function(resolve,reject){
