@@ -40,7 +40,7 @@ app.listen(3000);
 ```
 var options = { 
   useErrorHandler: false, 
-  continueMiddleWare: false,
+  continueMiddleware: false,
 }
 ```
 * `useErrorHandler`
