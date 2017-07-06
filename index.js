@@ -49,11 +49,7 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
         return this.server.authenticate(new Request(request), new Response(response), options);
       })
       .tap(function(token) {
-        _.extend(response.context, {
-          oauth: {
-            token
-          }
-        });
+        response.oauth = { token: token };
         return next();
       })
       .catch(function(error) {
