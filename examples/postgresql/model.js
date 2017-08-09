@@ -16,9 +16,9 @@ module.exports.getAccessToken = function(bearerToken) {
 
       return {
         accessToken: token.access_token,
-        clientId: token.client_id,
+        client: {id: token.client_id},
         expires: token.expires,
-        userId: token.userId
+        user: {id: token.userId}, // could be any object
       };
     });
 };
@@ -38,7 +38,8 @@ module.exports.getClient = function *(clientId, clientSecret) {
 
       return {
         clientId: oAuthClient.client_id,
-        clientSecret: oAuthClient.client_secret
+        clientSecret: oAuthClient.client_secret,
+        grants: ['password'], // the list of OAuth2 grant types that should be allowed
       };
     });
 };
@@ -78,6 +79,6 @@ module.exports.saveAccessToken = function *(token, client, user) {
     token.refreshTokenExpiresOn,
     user.id
   ]).then(function(result) {
-    return result.rowCount ? result.rows[0] : false;
+    return result.rowCount ? result.rows[0] : false; // TODO return object with client: {id: clientId} and user: {id: userId} defined
   });
 };

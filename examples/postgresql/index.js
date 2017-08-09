@@ -5,7 +5,7 @@
 
 var bodyParser = require('body-parser');
 var express = require('express');
-var oauthServer = require('oauth2-server');
+var oauthServer = require('express-oauth-server');
 var render = require('co-views')('views');
 var util = require('util');
 
@@ -74,7 +74,7 @@ app.post('/login', function(req, res) {
 });
 
 // Get secret.
-app.get('/secret', app.oauth.authorize(), function(req, res) {
+app.get('/secret', app.oauth.authenticate(), function(req, res) {
   // Will require a valid access_token.
   res.send('Secret area');
 });
