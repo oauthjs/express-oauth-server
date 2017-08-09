@@ -21,7 +21,7 @@ var OAuthServer = require('express-oauth-server');
 var app = express();
 
 app.oauth = new OAuthServer({
-  model: {}, // See https://github.com/thomseddon/node-oauth2-server for specification
+  model: {}, // See https://github.com/oauthjs/node-oauth2-server for specification
 });
 
 app.use(bodyParser.json());
