@@ -45,7 +45,6 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
   return function(req, res, next) {
     var request = new Request(req);
     var response = new Response(res);
-
     return Promise.bind(that)
       .then(function() {
         return this.server.authenticate(request, response, options);

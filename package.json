@@ -1,6 +1,6 @@
 {
   "name": "express-oauth-server",
-  "version": "2.0.0-b3",
+  "version": "2.0.0",
   "description": "OAuth provider for express",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "dependencies": {
     "bluebird": "^3.0.5",
     "express": "^4.13.3",
-    "oauth2-server": "next"
+    "oauth2-server": "3.0.0"
   },
   "devDependencies": {
     "body-parser": "^1.14.1",

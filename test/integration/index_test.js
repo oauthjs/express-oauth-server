@@ -59,7 +59,10 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should authenticate the request', function(done) {
-      var token = { user: {} };
+      var tokenExpires = new Date();
+      tokenExpires.setDate(tokenExpires.getDate() + 1);
+
+      var token = { user: {}, accessTokenExpiresAt: tokenExpires };
       var model = {
         getAccessToken: function() {
           return token;
@@ -83,7 +86,9 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should cache the authorization token', function(done) {
-      var token = { user: {} };
+      var tokenExpires = new Date();
+      tokenExpires.setDate(tokenExpires.getDate() + 1);
+      var token = { user: {}, accessTokenExpiresAt: tokenExpires };
       var model = {
         getAccessToken: function() {
           return token;
@@ -95,7 +100,7 @@ describe('ExpressOAuthServer', function() {
       
       var spy = sinon.spy(function(req, res, next) {
         res.locals.oauth.token.should.equal(token);
-
+        res.send(token);
         next();
       });
       app.use(spy);
@@ -103,19 +108,22 @@ describe('ExpressOAuthServer', function() {
       request(app.listen())
         .get('/')
         .set('Authorization', 'Bearer foobar')
-        .expect(200, function(){
-            spy.called.should.be.true;
-            done();
+        .expect(200, function(err, res){
+            spy.called.should.be.True();
+            done(err);
         });
     });
   });
 
   describe('authorize()', function() {
     it('should cache the authorization code', function(done) {
+      var tokenExpires = new Date();
+      tokenExpires.setDate(tokenExpires.getDate() + 1);
+
       var code = { authorizationCode: 123 };
       var model = {
         getAccessToken: function() {
-          return { user: {} };
+          return { user: {}, accessTokenExpiresAt: tokenExpires };
         },
         getClient: function() {
           return { grants: ['authorization_code'], redirectUris: ['http://example.com'] };
@@ -138,16 +146,16 @@ describe('ExpressOAuthServer', function() {
         .post('/?state=foobiz')
         .set('Authorization', 'Bearer foobar')
         .send({ client_id: 12345, response_type: 'code' })
-        .expect(200, function(){
-            spy.called.should.be.true;
-            done();
+        .expect(302, function(err, res){
+            spy.called.should.be.True();
+            done(err);
         });
     });
 
-    it('should return a `location` header with the error', function(done) {
+    it('should return an error', function(done) {
       var model = {
         getAccessToken: function() {
-          return { user: {} };
+          return { user: {}, accessTokenExpiresAt: new Date() };
         },
         getClient: function() {
           return { grants: ['authorization_code'], redirectUris: ['http://example.com'] };
@@ -164,14 +172,17 @@ describe('ExpressOAuthServer', function() {
         .post('/?state=foobiz')
         .set('Authorization', 'Bearer foobar')
         .send({ client_id: 12345 })
-        .expect('Location', 'http://example.com/?error=invalid_request&error_description=Missing%20parameter%3A%20%60response_type%60&state=foobiz')
-        .end(done);
+        .expect(400, function(err, res) {
+          res.body.error.should.eql('invalid_request');
+          res.body.error_description.should.eql('Missing parameter: `response_type`');
+          done(err);
+        });
     });
 
     it('should return a `location` header with the code', function(done) {
       var model = {
         getAccessToken: function() {
-          return { user: {} };
+          return { user: {}, accessTokenExpiresAt: new Date() };
         },
         getClient: function() {
           return { grants: ['authorization_code'], redirectUris: ['http://example.com'] };
@@ -232,9 +243,9 @@ describe('ExpressOAuthServer', function() {
         .post('/')
         .send('client_id=foo&client_secret=bar&grant_type=password&username=qux&password=biz')
         .expect({ access_token: 'foobar', token_type: 'Bearer' })
-        .expect(200, function(){ 
-          spy.called.should.be.true;
-          done();
+        .expect(200, function(err, res){
+          spy.called.should.be.True();
+          done(err);
         });
     });
 
