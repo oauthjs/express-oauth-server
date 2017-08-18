@@ -139,7 +139,7 @@ var handleResponse = function(req, res, response) {
     res.redirect(location);
   } else {
     res.set(response.headers);
-    res.status(response.status).send(response.body);
+    res.status(response.status || 200).send(response.body);
   }
 };
 
@@ -156,7 +156,7 @@ var handleError = function(e, req, res, response, next) {
       res.set(response.headers);
     }
 
-    res.status(e.code);
+    res.status( e.code || 500 );
 
     if (e instanceof UnauthorizedRequestError) {
       return res.send();
