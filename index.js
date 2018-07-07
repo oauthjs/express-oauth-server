@@ -22,10 +22,10 @@ function ExpressOAuthServer(options) {
     throw new InvalidArgumentError('Missing parameter: `model`');
   }
 
-  this.useErrorHandler = options.useErrorHandler ? true : false;
+  this.useErrorHandler = !!options.useErrorHandler;
   delete options.useErrorHandler;
 
-  this.continueMiddleware = options.continueMiddleware ? true : false;
+  this.continueMiddleware = !!options.continueMiddleware;
   delete options.continueMiddleware;
 
   this.server = new NodeOAuthServer(options);
@@ -54,7 +54,7 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
         next();
       })
       .catch(function(e) {
-        return handleError.call(this, e, req, res, null, next);
+        return handleError.call(this, e, req, res, null, next, options);
       });
   };
 };
@@ -88,7 +88,7 @@ ExpressOAuthServer.prototype.authorize = function(options) {
         return handleResponse.call(this, req, res, response);
       })
       .catch(function(e) {
-        return handleError.call(this, e, req, res, response, next);
+        return handleError.call(this, e, req, res, response, next, options);
       });
   };
 };
@@ -122,7 +122,7 @@ ExpressOAuthServer.prototype.token = function(options) {
         return handleResponse.call(this, req, res, response);
       })
       .catch(function(e) {
-        return handleError.call(this, e, req, res, response, next);
+        return handleError.call(this, e, req, res, response, next, options);
       });
   };
 };
@@ -147,9 +147,12 @@ var handleResponse = function(req, res, response) {
  * Handle error.
  */
 
-var handleError = function(e, req, res, response, next) {
-
-  if (this.useErrorHandler === true) {
+var handleError = function(e, req, res, response, next, options) {
+  var useErrorHandler = this.useErrorHandler;
+  if (options && 'useErrorHandler' in options) {
+    useErrorHandler = options.useErrorHandler;
+  }
+  if (useErrorHandler === true) {
     next(e);
   } else {
     if (response) {
