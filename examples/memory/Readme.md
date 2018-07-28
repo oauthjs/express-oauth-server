@@ -7,11 +7,27 @@ The object exposed in model.js could be directly passed into the model parameter
 For example:
 
 ```js
-var memorystore = require('model.js');
+var bodyParser = require('body-parser');
+var express = require('express');
+var OAuthServer = require('express-oauth-server');
 
-app.oauth = oauthserver({
-  model: memorystore
+var app = express();
+
+app.oauth = new OAuthServer({
+	debug: true,
+	// See https://github.com/oauthjs/node-oauth2-server for specification
+  model: require('./model')
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(app.oauth.authorize());
+
+app.use(function(req, res) {
+  res.send('Secret area');
+});
+
+app.listen(3000);
 ```
 
 # Dump

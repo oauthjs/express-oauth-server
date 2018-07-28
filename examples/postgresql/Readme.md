@@ -7,10 +7,27 @@ See schema.sql for the tables referred to in this example.
 For example:
 
 ```js
-var oauth = oauthserver({
-  debug: true,
+var bodyParser = require('body-parser');
+var express = require('express');
+var OAuthServer = require('express-oauth-server');
+
+var app = express();
+
+app.oauth = new OAuthServer({
+	debug: true,
+	// See https://github.com/oauthjs/node-oauth2-server for specification
   model: require('./model')
 });
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(app.oauth.authorize());
+
+app.use(function(req, res) {
+  res.send('Secret area');
+});
+
+app.listen(3000);
 ```
 
 ## Note
