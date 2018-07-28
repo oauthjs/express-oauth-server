@@ -7,8 +7,14 @@ See schema.sql for the tables referred to in this example.
 For example:
 
 ```js
-var oauth = oauthserver({
+var express = require('express');
+var OAuthServer = require('express-oauth-server');
+
+var app = express();
+
+app.oauth = new OAuthServer({
   debug: true,
+  // See https://github.com/oauthjs/node-oauth2-server for specification
   model: require('./model')
 });
 ```
