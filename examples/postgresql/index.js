@@ -5,7 +5,7 @@
 
 var bodyParser = require('body-parser');
 var express = require('express');
-var oauthServer = require('express-oauth-server');
+var OauthServer = require('express-oauth-server');
 var render = require('co-views')('views');
 var util = require('util');
 
@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add OAuth server.
-app.oauth = oauthServer({
+app.oauth = new OauthServer({
   model: require('./model')
 });
 
