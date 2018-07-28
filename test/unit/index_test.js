@@ -38,7 +38,7 @@ describe('ExpressOAuthServer', function() {
           oauth.server.authenticate.firstCall.args.should.have.length(3);
           oauth.server.authenticate.firstCall.args[0].should.be.an.instanceOf(Request);
           oauth.server.authenticate.firstCall.args[1].should.be.an.instanceOf(Response);
-          should.not.exist(oauth.server.authenticate.firstCall.args[2])
+          should.not.exist(oauth.server.authenticate.firstCall.args[2]);
           oauth.server.authenticate.restore();
 
           done();
@@ -68,7 +68,7 @@ describe('ExpressOAuthServer', function() {
 
   describe('authorize()', function() {
     it('should call `authorize()` and end middleware execution', function(done) {
-      var nextMiddleware = sinon.spy()
+      var nextMiddleware = sinon.spy();
       var oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'authorize').returns({});
@@ -91,7 +91,7 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `authorize()` and continue middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
+      var nextMiddleware = sinon.spy();
       var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
       sinon.stub(oauth.server, 'authorize').returns({});
@@ -137,7 +137,7 @@ describe('ExpressOAuthServer', function() {
 
   describe('token()', function() {
     it('should call `token()` and end middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
+      var nextMiddleware = sinon.spy();
       var oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'token').returns({});
@@ -160,7 +160,7 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `token()` and continue middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
+      var nextMiddleware = sinon.spy();
       var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
       sinon.stub(oauth.server, 'token').returns({});
