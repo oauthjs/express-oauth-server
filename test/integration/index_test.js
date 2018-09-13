@@ -108,9 +108,9 @@ describe('ExpressOAuthServer', function() {
       request(app.listen())
         .get('/')
         .set('Authorization', 'Bearer foobar')
-        .expect(200, function(err, res){
-            spy.called.should.be.True();
-            done(err);
+        .expect(200, function(err){
+          spy.called.should.be.true();
+          done(err);
         });
     });
   });
@@ -146,9 +146,9 @@ describe('ExpressOAuthServer', function() {
         .post('/?state=foobiz')
         .set('Authorization', 'Bearer foobar')
         .send({ client_id: 12345, response_type: 'code' })
-        .expect(302, function(err, res){
-            spy.called.should.be.True();
-            done(err);
+        .expect(302, function(err){
+          spy.called.should.be.true();
+          done(err);
         });
     });
 
@@ -243,8 +243,8 @@ describe('ExpressOAuthServer', function() {
         .post('/')
         .send('client_id=foo&client_secret=bar&grant_type=password&username=qux&password=biz')
         .expect({ access_token: 'foobar', token_type: 'Bearer' })
-        .expect(200, function(err, res){
-          spy.called.should.be.True();
+        .expect(200, function(err){
+          spy.called.should.be.true();
           done(err);
         });
     });
@@ -261,7 +261,6 @@ describe('ExpressOAuthServer', function() {
           return { accessToken: 'foobar', client: {}, user: {} };
         }
       };
-      var spy = sinon.spy();
       var oauth = new ExpressOAuthServer({ model: model, continueMiddleware: true });
 
       app.use(oauth.token());
