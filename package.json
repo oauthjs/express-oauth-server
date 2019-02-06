@@ -29,10 +29,10 @@
   "devDependencies": {
     "body-parser": "^1.14.1",
     "jshint": "^2.8.0",
-    "mocha": "^2.3.3",
+    "mocha": "^5.2.0",
     "should": "^7.1.0",
     "sinon": "^1.14.1",
-    "supertest": "^0.15.0"
+    "supertest": "^3.4.2"
   },
   "engines": {
     "node": ">=0.11"
