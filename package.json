@@ -27,11 +27,11 @@
     "oauth2-server": "^3.0.1"
   },
   "devDependencies": {
-    "body-parser": "^1.14.1",
-    "jshint": "^2.8.0",
+    "body-parser": "^1.18.3",
+    "jshint": "^2.10.1",
     "mocha": "^5.2.0",
-    "should": "^7.1.0",
-    "sinon": "^1.14.1",
+    "should": "^13.2.3",
+    "sinon": "^7.2.3",
     "supertest": "^3.4.2"
   },
   "engines": {
