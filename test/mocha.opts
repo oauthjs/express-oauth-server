@@ -1,3 +1,4 @@
 --require should
 --ui bdd
 --reporter spec
+--exit
