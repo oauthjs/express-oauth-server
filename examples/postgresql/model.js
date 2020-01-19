@@ -73,10 +73,10 @@ module.exports.getUser = function *(username, password) {
 module.exports.saveAccessToken = function *(token, client, user) {
   return pg.query('INSERT INTO oauth_tokens(access_token, access_token_expires_on, client_id, refresh_token, refresh_token_expires_on, user_id) VALUES ($1, $2, $3, $4)', [
     token.accessToken,
-    token.accessTokenExpiresOn,
+    token.accessTokenExpiresAt,
     client.id,
     token.refreshToken,
-    token.refreshTokenExpiresOn,
+    token.refreshTokenExpiresAt,
     user.id
   ]).then(function(result) {
     return result.rowCount ? result.rows[0] : false; // TODO return object with client: {id: clientId} and user: {id: userId} defined

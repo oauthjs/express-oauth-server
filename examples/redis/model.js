@@ -30,7 +30,7 @@ module.exports.getAccessToken = function(bearerToken) {
       return {
         accessToken: token.accessToken,
         clientId: token.clientId,
-        expires: token.accessTokenExpiresOn,
+        expires: token.accessTokenExpiresAt,
         userId: token.userId
       };
     });
@@ -67,7 +67,7 @@ module.exports.getRefreshToken = function(bearerToken) {
 
       return {
         clientId: token.clientId,
-        expires: token.refreshTokenExpiresOn,
+        expires: token.refreshTokenExpiresAt,
         refreshToken: token.accessToken,
         userId: token.userId
       };
