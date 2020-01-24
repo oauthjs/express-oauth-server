@@ -24,7 +24,7 @@
   "dependencies": {
     "bluebird": "^3.0.5",
     "express": "^4.13.3",
-    "oauth2-server": "3.0.0"
+    "oauth2-server": "^3.0.1"
   },
   "devDependencies": {
     "body-parser": "^1.14.1",
