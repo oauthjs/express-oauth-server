@@ -30,7 +30,7 @@
     "body-parser": "^1.14.1",
     "jshint": "^2.8.0",
     "mocha": "^2.3.3",
-    "should": "^7.1.0",
+    "should": "^13.2.3",
     "sinon": "^1.14.1",
     "supertest": "^0.15.0"
   },
