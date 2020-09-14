@@ -81,6 +81,7 @@ ExpressOAuthServer.prototype.authorize = function(options) {
       .tap(function(code) {
         res.locals.oauth = { code: code };
         if (this.continueMiddleware) {
+          res.locals.oauth.response = response;
           next();
         }
       })
@@ -115,6 +116,7 @@ ExpressOAuthServer.prototype.token = function(options) {
       .tap(function(token) {
         res.locals.oauth = { token: token };
         if (this.continueMiddleware) {
+          res.locals.oauth.response = response;
           next();
         }
       })
