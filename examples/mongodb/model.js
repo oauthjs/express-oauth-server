@@ -12,11 +12,11 @@ var Schema = mongoose.Schema;
 
 mongoose.model('OAuthTokens', new Schema({
   accessToken: { type: String },
-  accessTokenExpiresOn: { type: Date },
+  accessTokenExpiresAt: { type: Date },
   client : { type: Object },  // `client` and `user` are required in multiple places, for example `getAccessToken()`
   clientId: { type: String },
   refreshToken: { type: String },
-  refreshTokenExpiresOn: { type: Date },
+  refreshTokenExpiresAt: { type: Date },
   user : { type: Object },
   userId: { type: String },
 }));
@@ -79,11 +79,11 @@ module.exports.getUser = function(username, password) {
 module.exports.saveToken = function(token, client, user) {
   var accessToken = new OAuthTokensModel({
     accessToken: token.accessToken,
-    accessTokenExpiresOn: token.accessTokenExpiresOn,
+    accessTokenExpiresAt: token.accessTokenExpiresAt,
     client : client,
     clientId: client.clientId,
     refreshToken: token.refreshToken,
-    refreshTokenExpiresOn: token.refreshTokenExpiresOn,
+    refreshTokenExpiresAt: token.refreshTokenExpiresAt,
     user : user,
     userId: user._id,
   });
