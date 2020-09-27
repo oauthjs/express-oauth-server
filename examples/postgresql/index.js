@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add OAuth server.
-app.oauth = oauthServer({
+app.oauth = new oauthServer({
   model: require('./model')
 });
 
