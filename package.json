@@ -32,7 +32,7 @@
     "mocha": "^2.3.3",
     "should": "^7.1.0",
     "sinon": "^1.14.1",
-    "supertest": "^0.15.0"
+    "supertest": "^6.1.3"
   },
   "engines": {
     "node": ">=0.11"
