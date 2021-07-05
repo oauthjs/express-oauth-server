@@ -29,7 +29,7 @@
   "devDependencies": {
     "body-parser": "^1.14.1",
     "jshint": "^2.8.0",
-    "mocha": "^2.3.3",
+    "mocha": "^9.0.2",
     "should": "^7.1.0",
     "sinon": "^1.14.1",
     "supertest": "^0.15.0"
