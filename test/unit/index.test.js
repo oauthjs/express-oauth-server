@@ -24,10 +24,12 @@ describe('ExpressOAuthServer', function() {
   });
 
   describe('authenticate()', function() {
+
     it('should call `authenticate()`', function(done) {
       var oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'authenticate').returns({});
+      sinon.stub(oauth.server, 'authenticate')
+        .returns( Promise.resolve({}) );
 
       app.use(oauth.authenticate());
 
@@ -40,7 +42,6 @@ describe('ExpressOAuthServer', function() {
           oauth.server.authenticate.firstCall.args[1].should.be.an.instanceOf(Response);
           should.not.exist(oauth.server.authenticate.firstCall.args[2])
           oauth.server.authenticate.restore();
-
           done();
         });
     });
@@ -48,7 +49,8 @@ describe('ExpressOAuthServer', function() {
     it('should call `authenticate()` with options', function(done) {
       var oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'authenticate').returns({});
+      sinon.stub(oauth.server, 'authenticate')
+        .returns( Promise.resolve({}) );
 
       app.use(oauth.authenticate({options: true}));
 
@@ -71,7 +73,8 @@ describe('ExpressOAuthServer', function() {
       var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'authorize').returns({});
+      sinon.stub(oauth.server, 'authorize')
+        .returns( Promise.resolve({}) );
 
       app.use(oauth.authorize());
       app.use(nextMiddleware);
@@ -94,7 +97,8 @@ describe('ExpressOAuthServer', function() {
       var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
-      sinon.stub(oauth.server, 'authorize').returns({});
+      sinon.stub(oauth.server, 'authorize')
+        .returns( Promise.resolve({}) );
 
       app.use(oauth.authorize());
       app.use(nextMiddleware);
@@ -117,7 +121,8 @@ describe('ExpressOAuthServer', function() {
     it('should call `authorize()` with options', function(done) {
       var oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'authorize').returns({});
+      sinon.stub(oauth.server, 'authorize')
+        .returns(Promise.resolve({}));
 
       app.use(oauth.authorize({options: true}));
 
@@ -140,7 +145,8 @@ describe('ExpressOAuthServer', function() {
       var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'token').returns({});
+      sinon.stub(oauth.server, 'token')
+        .returns(Promise.resolve({}));
 
       app.use(oauth.token());
       app.use(nextMiddleware);
@@ -163,7 +169,8 @@ describe('ExpressOAuthServer', function() {
       var nextMiddleware = sinon.spy()
       var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
-      sinon.stub(oauth.server, 'token').returns({});
+      sinon.stub(oauth.server, 'token')
+        .returns(Promise.resolve({}));
 
       app.use(oauth.token());
       app.use(nextMiddleware);
@@ -186,7 +193,8 @@ describe('ExpressOAuthServer', function() {
     it('should call `token()` with options', function(done) {
       var oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'token').returns({});
+      sinon.stub(oauth.server, 'token')
+        .returns(Promise.resolve({}));
 
       app.use(oauth.token({options: true}));
 
