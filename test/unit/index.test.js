@@ -3,35 +3,44 @@
 /**
  * Module dependencies.
  */
-
-var ExpressOAuthServer = require('../../');
-var Request = require('oauth2-server').Request;
-var Response = require('oauth2-server').Response;
-var express = require('express');
-var request = require('supertest');
-var sinon = require('sinon');
-var should = require('should');
+const ExpressOAuthServer = require('../../');
+const Request = require('oauth2-server').Request;
+const Response = require('oauth2-server').Response;
+const express = require('express');
+const request = require('supertest');
+const sinon = require('sinon');
+const should = require('should');
 
 /**
  * Test `ExpressOAuthServer`.
  */
-
 describe('ExpressOAuthServer', function() {
-  var app;
+
+  let app, server;
 
   beforeEach(function() {
     app = express();
   });
 
-  describe('authenticate()', function() {
-    it('should call `authenticate()`', function(done) {
-      var oauth = new ExpressOAuthServer({ model: {} });
+  afterEach(function() {
+    if(server){
+      server.close();
+    }
+  });
 
-      sinon.stub(oauth.server, 'authenticate').returns({});
+
+  describe('authenticate()', function() {
+
+    it('should call `authenticate()`', function(done) {
+      let oauth = new ExpressOAuthServer({ model: {} });
+
+      sinon.stub(oauth.server, 'authenticate')
+        .returns( Promise.resolve({}) );
 
       app.use(oauth.authenticate());
 
-      request(app.listen())
+      server = app.listen();
+      request(server)
         .get('/')
         .end(function() {
           oauth.server.authenticate.callCount.should.equal(1);
@@ -40,19 +49,20 @@ describe('ExpressOAuthServer', function() {
           oauth.server.authenticate.firstCall.args[1].should.be.an.instanceOf(Response);
           should.not.exist(oauth.server.authenticate.firstCall.args[2])
           oauth.server.authenticate.restore();
-
           done();
         });
     });
 
     it('should call `authenticate()` with options', function(done) {
-      var oauth = new ExpressOAuthServer({ model: {} });
+      let oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'authenticate').returns({});
+      sinon.stub(oauth.server, 'authenticate')
+        .returns( Promise.resolve({}) );
 
       app.use(oauth.authenticate({options: true}));
 
-      request(app.listen())
+      server = app.listen();
+      request(server)
         .get('/')
         .end(function() {
           oauth.server.authenticate.callCount.should.equal(1);
@@ -68,15 +78,17 @@ describe('ExpressOAuthServer', function() {
 
   describe('authorize()', function() {
     it('should call `authorize()` and end middleware execution', function(done) {
-      var nextMiddleware = sinon.spy()
-      var oauth = new ExpressOAuthServer({ model: {} });
+      let nextMiddleware = sinon.spy()
+      let oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'authorize').returns({});
+      sinon.stub(oauth.server, 'authorize')
+        .returns( Promise.resolve({}) );
 
       app.use(oauth.authorize());
       app.use(nextMiddleware);
 
-      request(app.listen())
+      server = app.listen();
+      request(server)
         .get('/')
         .end(function() {
           oauth.server.authorize.callCount.should.equal(1);
@@ -91,15 +103,17 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `authorize()` and continue middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
-      var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
+      let nextMiddleware = sinon.spy()
+      let oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
-      sinon.stub(oauth.server, 'authorize').returns({});
+      sinon.stub(oauth.server, 'authorize')
+        .returns( Promise.resolve({}) );
 
       app.use(oauth.authorize());
       app.use(nextMiddleware);
 
-      request(app.listen())
+      server = app.listen();
+      request(server)
         .get('/')
         .end(function() {
           oauth.server.authorize.callCount.should.equal(1);
@@ -115,13 +129,15 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `authorize()` with options', function(done) {
-      var oauth = new ExpressOAuthServer({ model: {} });
+      let oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'authorize').returns({});
+      sinon.stub(oauth.server, 'authorize')
+        .returns(Promise.resolve({}));
 
       app.use(oauth.authorize({options: true}));
 
-      request(app.listen())
+      server = app.listen();
+      request(server)
         .get('/')
         .end(function() {
           oauth.server.authorize.callCount.should.equal(1);
@@ -137,15 +153,17 @@ describe('ExpressOAuthServer', function() {
 
   describe('token()', function() {
     it('should call `token()` and end middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
-      var oauth = new ExpressOAuthServer({ model: {} });
+      let nextMiddleware = sinon.spy()
+      let oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'token').returns({});
+      sinon.stub(oauth.server, 'token')
+        .returns(Promise.resolve({}));
 
       app.use(oauth.token());
       app.use(nextMiddleware);
 
-      request(app.listen())
+      server = app.listen();
+      request(server)
         .get('/')
         .end(function() {
           oauth.server.token.callCount.should.equal(1);
@@ -160,15 +178,17 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `token()` and continue middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
-      var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
+      let nextMiddleware = sinon.spy()
+      let oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
-      sinon.stub(oauth.server, 'token').returns({});
+      sinon.stub(oauth.server, 'token')
+        .returns(Promise.resolve({}));
 
       app.use(oauth.token());
       app.use(nextMiddleware);
 
-      request(app.listen())
+      server = app.listen();
+      request(server)
         .get('/')
         .end(function() {
           oauth.server.token.callCount.should.equal(1);
@@ -184,13 +204,15 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `token()` with options', function(done) {
-      var oauth = new ExpressOAuthServer({ model: {} });
+      let oauth = new ExpressOAuthServer({ model: {} });
 
-      sinon.stub(oauth.server, 'token').returns({});
+      sinon.stub(oauth.server, 'token')
+        .returns(Promise.resolve({}));
 
       app.use(oauth.token({options: true}));
 
-      request(app.listen())
+      server = app.listen();
+      request(server)
         .get('/')
         .end(function() {
           oauth.server.token.callCount.should.equal(1);
