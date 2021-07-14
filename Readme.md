@@ -14,11 +14,11 @@ The module provides two middlewares - one for granting tokens and another to aut
 The following example uses `body-parser` but you may opt for an alternative library.
 
 ```js
-var bodyParser = require('body-parser');
-var express = require('express');
-var OAuthServer = require('express-oauth-server');
+const bodyParser = require('body-parser');
+const express = require('express');
+const OAuthServer = require('express-oauth-server');
 
-var app = express();
+const app = express();
 
 app.oauth = new OAuthServer({
   model: {}, // See https://github.com/oauthjs/node-oauth2-server for specification
@@ -38,7 +38,7 @@ app.listen(3000);
 ## Options
 
 ```
-var options = { 
+let options = { 
   useErrorHandler: false, 
   continueMiddleware: false,
 }
