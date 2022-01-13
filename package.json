@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "jshint .",
-    "test": "mocha --recursive test"
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha 'test/**/*_test.js'"
   },
   "repository": {
     "type": "git",
@@ -22,14 +22,14 @@
   },
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
+    "@node-oauth/oauth2-server": "^4.1.1",
     "bluebird": "^3.0.5",
-    "express": "^4.13.3",
-    "oauth2-server": "3.0.0"
+    "express": "^4.13.3"
   },
   "devDependencies": {
     "body-parser": "^1.14.1",
     "jshint": "^2.8.0",
-    "mocha": "^2.3.3",
+    "mocha": "^2.5.3",
     "should": "^7.1.0",
     "sinon": "^1.14.1",
     "supertest": "^0.15.0"

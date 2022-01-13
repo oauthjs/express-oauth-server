@@ -5,8 +5,8 @@
  */
 
 var ExpressOAuthServer = require('../../');
-var InvalidArgumentError = require('oauth2-server/lib/errors/invalid-argument-error');
-var NodeOAuthServer = require('oauth2-server');
+var InvalidArgumentError = require('@node-oauth/oauth2-server/lib/errors/invalid-argument-error');
+var NodeOAuthServer = require('@node-oauth/oauth2-server');
 var bodyparser = require('body-parser');
 var express = require('express');
 var request = require('supertest');

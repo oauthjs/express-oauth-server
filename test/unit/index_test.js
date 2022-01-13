@@ -5,8 +5,8 @@
  */
 
 var ExpressOAuthServer = require('../../');
-var Request = require('oauth2-server').Request;
-var Response = require('oauth2-server').Response;
+var Request = require('@node-oauth/oauth2-server').Request;
+var Response = require('@node-oauth/oauth2-server').Response;
 var express = require('express');
 var request = require('supertest');
 var sinon = require('sinon');

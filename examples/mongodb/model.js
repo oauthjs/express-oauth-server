@@ -44,7 +44,7 @@ var OAuthUsersModel = mongoose.model('OAuthUsers');
  */
 
 module.exports.getAccessToken = function(bearerToken) {
-  // Adding `.lean()`, as we get a mongoose wrapper object back from `findOne(...)`, and oauth2-server complains.
+  // Adding `.lean()`, as we get a mongoose wrapper object back from `findOne(...)`, and @node-oauth/oauth2-server complains.
   return OAuthTokensModel.findOne({ accessToken: bearerToken }).lean();
 };
 
@@ -97,7 +97,7 @@ module.exports.saveToken = function(token, client, user) {
     // `saveResult` is mongoose wrapper object, not doc itself. Calling `toJSON()` returns the doc.
     saveResult = saveResult && typeof saveResult == 'object' ? saveResult.toJSON() : saveResult;
     
-    // Unsure what else points to `saveResult` in oauth2-server, making copy to be safe
+    // Unsure what else points to `saveResult` in @node-oauth/oauth2-server, making copy to be safe
     var data = new Object();
     for( var prop in saveResult ) data[prop] = saveResult[prop];
     
