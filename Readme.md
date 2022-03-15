@@ -15,6 +15,10 @@ npm-login() {
 npm-login()
 ```
 
+### npm publish
+
+To republish the package, first run `npm-login`, then `npm publish`
+
 ## Installation
 
     $ npm install express-oauth-server
