@@ -4,6 +4,17 @@ Complete, compliant and well tested module for implementing an OAuth2 Server/Pro
 
 This is the express wrapper for [oauth2-server](https://github.com/oauthjs/node-oauth2-server).
 
+## npm install
+
+Some dependencies (node modules) are privately hosted on AWS Code Artifacts. First, configure an AWS account locally, then run the following command to connect to AWS Code Artifacts:
+```
+npm-login() {
+    aws codeartifact login --tool npm --repository gw --domain growthschool --domain-owner 314254797702
+}
+
+npm-login()
+```
+
 ## Installation
 
     $ npm install express-oauth-server
