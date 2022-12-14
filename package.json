@@ -23,7 +23,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "bluebird": "^3.0.5",
-    "express": "^4.13.3",
+    "express": "^4.18.2",
     "oauth2-server": "github:classcraft/node-oauth2-server"
   },
   "devDependencies": {
