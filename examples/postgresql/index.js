@@ -5,7 +5,7 @@
 
 var bodyParser = require('body-parser');
 var express = require('express');
-var oauthServer = require('express-oauth-server');
+var oauthServer = require('@node-oauth/express-oauth-server');
 var render = require('co-views')('views');
 var util = require('util');
 

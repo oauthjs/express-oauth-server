@@ -1,0 +1,18 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es6": false
+  },
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "sourceType": "module",
+    "ecmaFeatures" : {
+      "globalReturn": false,
+      "impliedStrict": true,
+      "jsx": false
+    }
+  }
+}
+  
