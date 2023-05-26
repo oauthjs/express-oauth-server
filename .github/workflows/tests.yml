@@ -1,0 +1,45 @@
+name: Tests
+
+# This workflow runs standard unit tests to ensure basic integrity and avoid
+# regressions on pull-requests (and pushes)
+
+on:
+  push:
+    branches:
+      - master    # allthough  master is push protected we still keep it
+      - development
+  pull_request:   # runs on all PR
+
+jobs:
+  unittest:
+    name: unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14, 16, 18]
+    steps:
+    - name: Checkout ${{ matrix.node }}
+      uses: actions/checkout@v2
+
+    - name: Setup node ${{ matrix.node }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node }}
+
+    - name: Cache dependencies ${{ matrix.node }}
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ matrix.node }}
+    - run: npm i
+    - run: npm run test:coverage
+
+    # with the following action we enforce PRs to have a high coverage
+    # and ensure, changes are tested well enough so that coverage won't fail
+    - name: check coverage
+      uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
+      with:
+        path: './coverage/lcov.info'
+        min_coverage: 95
