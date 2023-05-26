@@ -4,5 +4,6 @@ retries: 0
 slow: 20
 timeout: 2000
 ui: "bdd"
+exit: true
 # require: test/assertions
 # for more options see here https://github.com/mochajs/mocha/blob/master/example/config/.mocharc.yml
