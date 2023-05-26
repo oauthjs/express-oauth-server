@@ -1,4 +1,4 @@
-// Type definitions for express-oauth-server 3.0.0
+// Type definitions for @node-oauth/express-oauth-server 3.0.0
 // Project: https://github.com/node-oauth/express-oauth-server
 // Definitions by: Arne Schubert <https://github.com/atd-schubert>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
