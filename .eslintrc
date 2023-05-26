@@ -3,7 +3,7 @@
   "env": {
     "node": true,
     "mocha": true,
-    "es6": true
+    "es6": false
   },
   "parserOptions": {
     "ecmaVersion": 9,
@@ -13,42 +13,6 @@
       "impliedStrict": true,
       "jsx": false
     }
-  },
-  "rules": {
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "no-console": [
-      "error"
-    ],
-    "no-var": [
-      "error"
-    ],
-    "prefer-const": ["error", {
-      "destructuring": "any",
-      "ignoreReadBeforeAssign": false
-    }],
-    "no-unused-vars": [
-      "error", 
-      { 
-        "vars": "all",
-        "args": "none",
-        "ignoreRestSiblings": false 
-      }
-    ]
   }
 }
   
