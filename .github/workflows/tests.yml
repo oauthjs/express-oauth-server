@@ -19,7 +19,7 @@ jobs:
         node: [14, 16, 18]
     steps:
     - name: Checkout ${{ matrix.node }}
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup node ${{ matrix.node }}
       uses: actions/setup-node@v3
@@ -33,7 +33,7 @@ jobs:
         key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-${{ matrix.node }}
-    - run: npm i
+    - run: npm ci
     - run: npm run test:coverage
 
     # with the following action we enforce PRs to have a high coverage
