@@ -1,38 +1,45 @@
 {
-  "name": "express-oauth-server",
-  "version": "2.0.0",
+  "name": "@node-oauth/express-oauth-server",
+  "version": "3.0.0",
   "description": "OAuth provider for express",
   "main": "index.js",
   "scripts": {
     "lint": "jshint .",
-    "test": "NODE_ENV=test mocha 'test/**/*_test.js'"
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha 'test/**/*_test.js'",
+    "test-debug": "NODE_ENV=test ./node_modules/.bin/mocha  --inspect --debug-brk 'test/**/*_test.js'",
+    "test:watch": "NODE_ENV=test ./node_modules/.bin/mocha --watch 'test/**/*_test.js'",
+    "test:coverage": "NODE_ENV=test nyc --reporter=html --reporter=lcov --reporter=text ./node_modules/.bin/mocha 'test/**/*_test.js'"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/seegno/express-oauth-server"
+    "url": "git://github.com/node-oauth/express-oauth-server"
   },
+  "files": [
+    "index.js"
+  ],
   "keywords": [
     "express",
     "oauth",
     "oauth2"
   ],
-  "author": {
-    "name": "Nuno Sousa",
-    "email": "nfs@seegno.com"
-  },
-  "license": "SEE LICENSE IN LICENSE",
+  "contributors": [
+    "Nuno Sousa <nfs@seegno.com>",
+    "Jan Küster <info@jankuester.com>"
+  ],
+  "license": "MIT",
   "dependencies": {
-    "@node-oauth/oauth2-server": "^4.1.1",
-    "bluebird": "^3.0.5",
-    "express": "^4.13.3"
+    "@node-oauth/oauth2-server": "^4.3.0",
+    "bluebird": "^3.7.2",
+    "express": "^4.18.2"
   },
   "devDependencies": {
-    "body-parser": "^1.14.1",
-    "jshint": "^2.8.0",
-    "mocha": "^2.5.3",
-    "should": "^7.1.0",
-    "sinon": "^1.14.1",
-    "supertest": "^0.15.0"
+    "body-parser": "^1.20.2",
+    "eslint": "^8.41.0",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "should": "^13.2.3",
+    "sinon": "^15.1.0",
+    "supertest": "^6.3.3"
   },
   "engines": {
     "node": ">=0.11"
