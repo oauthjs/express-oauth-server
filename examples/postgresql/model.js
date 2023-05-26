@@ -1,5 +1,6 @@
+/* eslint-disable  require-yield */
 
-/**
+ /**
  * Module dependencies.
  */
 
@@ -82,3 +83,5 @@ module.exports.saveAccessToken = function *(token, client, user) {
     return result.rowCount ? result.rows[0] : false; // TODO return object with client: {id: clientId} and user: {id: userId} defined
   });
 };
+
+/* eslint-enable  require-yield */
