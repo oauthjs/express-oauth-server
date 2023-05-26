@@ -1,6 +1,11 @@
-# Express OAuth Server [![Build Status](https://travis-ci.org/oauthjs/express-oauth-server.png?branch=master)](https://travis-ci.org/oauthjs/express-oauth-server)
+# Express OAuth Server 
 
 Complete, compliant and well tested module for implementing an OAuth2 Server/Provider with [express](https://github.com/expressjs/express) in [node.js](http://nodejs.org/).
+
+[![Tests](https://github.com/node-oauth/express-oauth-server/actions/workflows/tests.yml/badge.svg)](https://github.com/node-oauth/express-oauth-server/actions/workflows/tests.yml)
+[![CodeQL](https://github.com/node-oauth/express-oauth-server/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/node-oauth/express-oauth-server/actions/workflows/github-code-scanning/codeql)
+![GitHub](https://img.shields.io/github/license/node-oauth/express-oauth-server)
+
 
 This is the express wrapper for [oauth2-server](https://github.com/oauthjs/node-oauth2-server).
 
