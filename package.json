@@ -1,6 +1,6 @@
 {
   "name": "@node-oauth/express-oauth-server",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "OAuth provider for express",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -17,7 +17,8 @@
     "url": "git://github.com/node-oauth/express-oauth-server"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "keywords": [
     "express",
