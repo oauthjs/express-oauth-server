@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "description": "OAuth provider for express",
   "main": "index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "lint": "npx eslint .",
     "lint:fix": "npx eslint . --fix",
