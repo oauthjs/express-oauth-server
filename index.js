@@ -1,34 +1,34 @@
-'use strict';
-
 /**
  * Module dependencies.
  */
 
-var InvalidArgumentError = require('@node-oauth/oauth2-server/lib/errors/invalid-argument-error');
-var NodeOAuthServer = require('@node-oauth/oauth2-server');
-var Promise = require('bluebird');
-var Request = require('@node-oauth/oauth2-server').Request;
-var Response = require('@node-oauth/oauth2-server').Response;
-var UnauthorizedRequestError = require('@node-oauth/oauth2-server/lib/errors/unauthorized-request-error');
+const InvalidArgumentError = require('@node-oauth/oauth2-server/lib/errors/invalid-argument-error');
+const NodeOAuthServer = require('@node-oauth/oauth2-server');
+const Request = require('@node-oauth/oauth2-server').Request;
+const Response = require('@node-oauth/oauth2-server').Response;
+const UnauthorizedRequestError = require('@node-oauth/oauth2-server/lib/errors/unauthorized-request-error');
 
 /**
- * Constructor.
+ *
  */
+class ExpressOAuthServer {
+  /**
+   * @constructor
+   */
+  constructor(options = {}) {
+    if (!options.model) {
+      throw new InvalidArgumentError('Missing parameter: `model`');
+    }
 
-function ExpressOAuthServer(options) {
-  options = options || {};
+    this.useErrorHandler = !!options.useErrorHandler;
+    delete options.useErrorHandler;
 
-  if (!options.model) {
-    throw new InvalidArgumentError('Missing parameter: `model`');
+    this.continueMiddleware = !!options.continueMiddleware;
+    delete options.continueMiddleware;
+
+    this.server = new NodeOAuthServer(options);
   }
 
-  this.useErrorHandler = options.useErrorHandler ? true : false;
-  delete options.useErrorHandler;
-
-  this.continueMiddleware = options.continueMiddleware ? true : false;
-  delete options.continueMiddleware;
-
-  this.server = new NodeOAuthServer(options);
 }
 
 /**
@@ -40,23 +40,22 @@ function ExpressOAuthServer(options) {
  */
 
 ExpressOAuthServer.prototype.authenticate = function(options) {
-  var that = this;
+  const fn = async function(req, res, next) {
+    const request = new Request(req);
+    const response = new Response(res);
 
-  return function(req, res, next) {
-    var request = new Request(req);
-    var response = new Response(res);
-    return Promise.bind(that)
-      .then(function() {
-        return this.server.authenticate(request, response, options);
-      })
-      .tap(function(token) {
-        res.locals.oauth = { token: token };
-        next();
-      })
-      .catch(function(e) {
-        return handleError.call(this, e, req, res, null, next);
-      });
+    let token
+
+    try {
+      token = await this.server.authenticate(request, response, options);
+    } catch (e) {
+      return handleError.call(this, e, req, res, null, next);
+    }
+
+    res.locals.oauth = { token };
+    next();
   };
+  return fn.bind(this);
 };
 
 /**
@@ -68,29 +67,27 @@ ExpressOAuthServer.prototype.authenticate = function(options) {
  */
 
 ExpressOAuthServer.prototype.authorize = function(options) {
-  var that = this;
+  const fn = async function(req, res, next) {
+    const request = new Request(req);
+    const response = new Response(res);
 
-  return function(req, res, next) {
-    var request = new Request(req);
-    var response = new Response(res);
+    let code
 
-    return Promise.bind(that)
-      .then(function() {
-        return this.server.authorize(request, response, options);
-      })
-      .tap(function(code) {
-        res.locals.oauth = { code: code };
-        if (this.continueMiddleware) {
-          next();
-        }
-      })
-      .then(function() {
-        return handleResponse.call(this, req, res, response);
-      })
-      .catch(function(e) {
-        return handleError.call(this, e, req, res, response, next);
-      });
+    try {
+      code = await this.server.authorize(request, response, options);
+    } catch (e) {
+      return handleError.call(this, e, req, res, response, next);
+    }
+
+    res.locals.oauth = { code: code };
+    if (this.continueMiddleware) {
+      next();
+    }
+
+    return handleResponse.call(this, req, res, response);
   };
+
+  return fn.bind(this);
 };
 
 /**
@@ -102,38 +99,35 @@ ExpressOAuthServer.prototype.authorize = function(options) {
  */
 
 ExpressOAuthServer.prototype.token = function(options) {
-  var that = this;
+  const fn = async function(req, res, next) {
+    const request = new Request(req);
+    const response = new Response(res);
 
-  return function(req, res, next) {
-    var request = new Request(req);
-    var response = new Response(res);
+    let token
 
-    return Promise.bind(that)
-      .then(function() {
-        return this.server.token(request, response, options);
-      })
-      .tap(function(token) {
-        res.locals.oauth = { token: token };
-        if (this.continueMiddleware) {
-          next();
-        }
-      })
-      .then(function() {
-        return handleResponse.call(this, req, res, response);
-      })
-      .catch(function(e) {
-        return handleError.call(this, e, req, res, response, next);
-      });
+    try {
+      token = await this.server.token(request, response, options);
+    } catch (e) {
+      return handleError.call(this, e, req, res, response, next);
+    }
+
+    res.locals.oauth = { token: token };
+    if (this.continueMiddleware) {
+      next();
+    }
+
+    return handleResponse.call(this, req, res, response);
   };
+
+  return fn.bind(this);
 };
 
 /**
  * Handle response.
  */
-var handleResponse = function(req, res, response) {
-
+const handleResponse = function(req, res, response) {
   if (response.status === 302) {
-    var location = response.headers.location;
+    const location = response.headers.location;
     delete response.headers.location;
     res.set(response.headers);
     res.redirect(location);
@@ -147,8 +141,7 @@ var handleResponse = function(req, res, response) {
  * Handle error.
  */
 
-var handleError = function(e, req, res, response, next) {
-
+const handleError = function(e, req, res, response, next) {
   if (this.useErrorHandler === true) {
     next(e);
   } else {
