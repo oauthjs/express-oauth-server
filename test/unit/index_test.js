@@ -1,23 +1,21 @@
-'use strict';
-
 /**
  * Module dependencies.
  */
 
-var ExpressOAuthServer = require('../../');
-var Request = require('@node-oauth/oauth2-server').Request;
-var Response = require('@node-oauth/oauth2-server').Response;
-var express = require('express');
-var request = require('supertest');
-var sinon = require('sinon');
-var should = require('should');
+const ExpressOAuthServer = require('../../');
+const Request = require('@node-oauth/oauth2-server').Request;
+const Response = require('@node-oauth/oauth2-server').Response;
+const express = require('express');
+const request = require('supertest');
+const sinon = require('sinon');
+const should = require('should');
 
 /**
  * Test `ExpressOAuthServer`.
  */
 
 describe('ExpressOAuthServer', function() {
-  var app;
+  let app;
 
   beforeEach(function() {
     app = express();
@@ -25,7 +23,7 @@ describe('ExpressOAuthServer', function() {
 
   describe('authenticate()', function() {
     it('should call `authenticate()`', function(done) {
-      var oauth = new ExpressOAuthServer({ model: {} });
+      const oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'authenticate').returns({});
 
@@ -46,7 +44,7 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `authenticate()` with options', function(done) {
-      var oauth = new ExpressOAuthServer({ model: {} });
+      const oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'authenticate').returns({});
 
@@ -68,8 +66,8 @@ describe('ExpressOAuthServer', function() {
 
   describe('authorize()', function() {
     it('should call `authorize()` and end middleware execution', function(done) {
-      var nextMiddleware = sinon.spy()
-      var oauth = new ExpressOAuthServer({ model: {} });
+      const nextMiddleware = sinon.spy()
+      const oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'authorize').returns({});
 
@@ -91,8 +89,8 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `authorize()` and continue middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
-      var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
+      const nextMiddleware = sinon.spy()
+      const oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
       sinon.stub(oauth.server, 'authorize').returns({});
 
@@ -115,7 +113,7 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `authorize()` with options', function(done) {
-      var oauth = new ExpressOAuthServer({ model: {} });
+      const oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'authorize').returns({});
 
@@ -137,8 +135,8 @@ describe('ExpressOAuthServer', function() {
 
   describe('token()', function() {
     it('should call `token()` and end middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
-      var oauth = new ExpressOAuthServer({ model: {} });
+      const nextMiddleware = sinon.spy()
+      const oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'token').returns({});
 
@@ -160,8 +158,8 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `token()` and continue middleware chain', function(done) {
-      var nextMiddleware = sinon.spy()
-      var oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
+      const nextMiddleware = sinon.spy()
+      const oauth = new ExpressOAuthServer({ model: {}, continueMiddleware: true });
 
       sinon.stub(oauth.server, 'token').returns({});
 
@@ -184,7 +182,7 @@ describe('ExpressOAuthServer', function() {
     });
 
     it('should call `token()` with options', function(done) {
-      var oauth = new ExpressOAuthServer({ model: {} });
+      const oauth = new ExpressOAuthServer({ model: {} });
 
       sinon.stub(oauth.server, 'token').returns({});
 
