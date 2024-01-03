@@ -31,17 +31,16 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@node-oauth/oauth2-server": "^4.3.0",
-    "bluebird": "^3.7.2",
+    "@node-oauth/oauth2-server": "^5.1.0",
     "express": "^4.18.2"
   },
   "devDependencies": {
     "body-parser": "^1.20.2",
-    "eslint": "^8.41.0",
+    "eslint": "^8.56.0",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
-    "sinon": "^15.1.0",
+    "sinon": "^17.0.1",
     "supertest": "^6.3.3"
   },
   "engines": {
