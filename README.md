@@ -4,6 +4,9 @@ Complete, compliant and well tested module for implementing an OAuth2 Server/Pro
 
 [![Tests](https://github.com/node-oauth/express-oauth-server/actions/workflows/tests.yml/badge.svg)](https://github.com/node-oauth/express-oauth-server/actions/workflows/tests.yml)
 [![CodeQL](https://github.com/node-oauth/express-oauth-server/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/node-oauth/express-oauth-server/actions/workflows/github-code-scanning/codeql)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![npm Version](https://img.shields.io/npm/v/@node-oauth/express-oauth-server?label=version)](https://www.npmjs.com/package/@node-oauth/oauth2-server)
+[![npm Downloads/Week](https://img.shields.io/npm/dw/@node-oauth/express-oauth-server)](https://www.npmjs.com/package/@node-oauth/oauth2-server)
 ![GitHub](https://img.shields.io/github/license/node-oauth/express-oauth-server)
 
 
@@ -24,11 +27,11 @@ expect the request body to be parsed already.
 The following example uses `body-parser` but you may opt for an alternative library.
 
 ```js
-var bodyParser = require('body-parser');
-var express = require('express');
-var OAuthServer = require('@node-oauth/express-oauth-server');
+const bodyParser = require('body-parser');
+const express = require('express');
+const OAuthServer = require('@node-oauth/express-oauth-server');
 
-var app = express();
+const app = express();
 
 app.oauth = new OAuthServer({
   model: {}, // See https://github.com/node-oauth/node-oauth2-server for specification
@@ -48,18 +51,19 @@ app.listen(3000);
 ## Options
 
 ```
-var options = { 
+const options = { 
   useErrorHandler: false, 
   continueMiddleware: false,
 }
 ```
-* `useErrorHandler`
+
+- `useErrorHandler`
 (_type: boolean_ default: false)
 
   If false, an error response will be rendered by this component.
   Set this value to true to allow your own express error handler to handle the error.
 
-* `continueMiddleware`
+- `continueMiddleware`
 (_type: boolean default: false_)
 
   The `authorize()` and `token()` middlewares will both render their 
@@ -69,3 +73,7 @@ var options = {
   **Note:** You cannot modify the response since the headers have already been sent.
 
   `authenticate()` does not modify the response and will always call next()
+
+## License
+
+MIT, see 

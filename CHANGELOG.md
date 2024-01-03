@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.0.0
+
+- bump minimal node to 16
+- upgrade @node-oauth/oauth2-server to 5.1.0
+- drop bluebird dependency
+- upgrade all deps / dev-deps
+- refactor all code to minimum es6
+- use native async/await
+
+
 ## 3.0.0
 - use @node-oauth/oauth2-server
 - update all dependencies to latest
